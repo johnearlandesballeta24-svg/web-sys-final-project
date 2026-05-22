@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Balino Gym</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Balino Gym</h1>
+      <p class="subtitle">Fitness Management System</p>
+
+      <!-- Role Toggle -->
+      <div class="tabs">
+        <button
+          id="memberRoleBtn"
+          class="active"
+          onclick="switchRole('member')"
+        >
+          Member
+        </button>
+        <button id="staffRoleBtn" onclick="switchRole('staff')">Staff</button>
+      </div>
+
+      <!-- Login / Register Toggle -->
+      <div class="tabs" style="margin-top: 8px">
+        <button id="loginTab" class="active" onclick="showTab('login')">
+          Sign in
+        </button>
+        <button id="signupTab" onclick="showTab('signup')">Register</button>
+      </div>
+
+      <!-- MEMBER LOGIN -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div id="loginError" class="error-msg"></div>
+        <label>Email</label>
+        <input type="email" id="loginEmail" required />
+        <label>Password</label>
+        <input type="password" id="loginPassword" required />
+        <button type="submit">Sign in</button>
+      </form>
+
+      <!-- MEMBER SIGNUP -->
+      <form
+        id="signupForm"
+        onsubmit="handleSignup(event)"
+        style="display: none"
+      >
+        <div id="signupError" class="error-msg"></div>
+        <label>First Name</label>
+        <input type="text" id="firstName" required />
+        <label>Last Name</label>
+        <input type="text" id="lastName" required />
+        <label>Gender</label>
+        <select id="gender">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+        <label>Birthday</label>
+        <input type="date" id="birthday" required />
+        <label>Phone Number</label>
+        <input type="text" id="phone" placeholder="09xxxxxxxxx" required />
+        <label>Street</label>
+        <input type="text" id="street" placeholder="Blk 1 Lot 2" required />
+        <label>City</label>
+        <input type="text" id="city" placeholder="Quezon City" required />
+        <label>Email</label>
+        <input type="email" id="signupEmail" required />
+        <label>Password</label>
+        <input type="password" id="signupPassword" required />
+        <button type="submit">Create account</button>
+      </form>
+
+      <!-- STAFF LOGIN -->
+      <form
+        id="staffLoginForm"
+        onsubmit="handleStaffLogin(event)"
+        style="display: none"
+      >
+        <div id="staffLoginError" class="error-msg"></div>
+        <label>Staff ID</label>
+        <input type="text" id="staffLoginId" required />
+        <label>Password</label>
+        <input type="password" id="staffLoginPassword" required />
+        <button type="submit">Sign in as Staff</button>
+      </form>
+
+      <!-- STAFF REGISTER -->
+      <form
+        id="staffRegisterForm"
+        onsubmit="handleStaffRegister(event)"
+        style="display: none"
+      >
+        <div id="staffRegisterError" class="error-msg"></div>
+        <label>Staff ID</label>
+        <input type="text" id="staffId" required />
+        <label>Set Password</label>
+        <input type="password" id="staffPassword" required />
+        <label>Confirm Password</label>
+        <input type="password" id="staffConfirmPassword" required />
+        <button type="submit">Register Staff Account</button>
+      </form>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

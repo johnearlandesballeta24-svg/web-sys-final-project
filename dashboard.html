@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Balino Gym - Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="dashboard.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- SIDEBAR -->
+      <nav id="sidebar">
+        <div class="sidebar-header">
+          <h2>Balino Gym</h2>
+          <p id="sidebarUser" class="sidebar-user"></p>
+          <span id="sidebarRole" class="role-badge"></span>
+        </div>
+
+        <ul class="sidebar-menu">
+          <li>
+            <a href="#" class="active" onclick="showSection('overview')">
+              <i class="bi bi-grid-fill"></i> Overview
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="showSection('members')">
+              <i class="bi bi-people-fill"></i> Members
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="showSection('attendance')">
+              <i class="bi bi-calendar-check-fill"></i> Attendance
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="showSection('equipment')">
+              <i class="bi bi-gear-fill"></i> Equipment
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="showSection('payments')">
+              <i class="bi bi-cash-stack"></i> Payments
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="showSection('programs')">
+              <i class="bi bi-heart-pulse-fill"></i> Fitness Programs
+            </a>
+          </li>
+        </ul>
+        <div class="sidebar-footer">
+          <a href="#" onclick="logout()">
+            <i class="bi bi-box-arrow-left"></i> Logout
+          </a>
+        </div>
+      </nav>
+
+      <!-- MAIN CONTENT -->
+      <div id="mainContent">
+        <!-- TOP BAR -->
+        <div class="topbar">
+          <button id="sidebarToggle" onclick="toggleSidebar()">
+            <i class="bi bi-list"></i>
+          </button>
+          <span id="sectionTitle" class="section-title">Overview</span>
+          <span id="topbarUser" class="topbar-user"></span>
+        </div>
+
+        <!-- OVERVIEW -->
+        <div id="section-overview" class="section active">
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+              <div class="stat-card">
+                <div class="stat-icon bg-green">
+                  <i class="bi bi-people-fill"></i>
+                </div>
+                <div class="stat-info">
+                  <p>Total Members</p>
+                  <h3 id="totalMembers">--</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-card">
+                <div class="stat-icon bg-blue">
+                  <i class="bi bi-calendar-check-fill"></i>
+                </div>
+                <div class="stat-info">
+                  <p>Attendance Today</p>
+                  <h3 id="totalAttendance">--</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-card">
+                <div class="stat-icon bg-orange">
+                  <i class="bi bi-cash-stack"></i>
+                </div>
+                <div class="stat-info">
+                  <p>Total Payments</p>
+                  <h3 id="totalPayments">--</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-card">
+                <div class="stat-icon bg-red">
+                  <i class="bi bi-gear-fill"></i>
+                </div>
+                <div class="stat-info">
+                  <p>Equipment</p>
+                  <h3 id="totalEquipment">--</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MEMBERS -->
+        <div id="section-members" class="section">
+          <div class="section-card">
+            <div class="section-card-header">
+              <h5>Members List</h5>
+              <input
+                type="text"
+                id="searchMembers"
+                class="search-box"
+                placeholder="Search members..."
+                oninput="filterTable('membersTable', this.value)"
+              />
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover" id="membersTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>City</th>
+                    <th>Birthday</th>
+                  </tr>
+                </thead>
+                <tbody id="membersBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ATTENDANCE -->
+        <div id="section-attendance" class="section">
+          <div class="section-card">
+            <div class="section-card-header">
+              <h5>Attendance Records</h5>
+              <input
+                type="text"
+                class="search-box"
+                placeholder="Search..."
+                oninput="filterTable('attendanceTable', this.value)"
+              />
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover" id="attendanceTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Member</th>
+                    <th>Date</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                  </tr>
+                </thead>
+                <tbody id="attendanceBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- EQUIPMENT -->
+        <div id="section-equipment" class="section">
+          <div class="section-card">
+            <div class="section-card-header">
+              <h5>Equipment List</h5>
+              <div class="d-flex gap-2">
+                <input
+                  type="text"
+                  class="search-box"
+                  placeholder="Search..."
+                  oninput="filterTable('equipmentTable', this.value)"
+                />
+                <!-- Only shown to Maintenance -->
+                <button
+                  class="btn-add maintenance-only"
+                  onclick="openAddEquipment()"
+                >
+                  + Add Equipment
+                </button>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover" id="equipmentTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    <th class="maintenance-only">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="equipmentBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- EQUIPMENT MODAL -->
+        <div id="equipmentModal" class="modal-overlay" style="display: none">
+          <div class="modal-box">
+            <div class="modal-header">
+              <h5 id="modalTitle">Add Equipment</h5>
+              <button onclick="closeModal()" class="modal-close">
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" id="equipmentId" />
+              <div class="mb-3">
+                <label>Equipment Name</label>
+                <input
+                  type="text"
+                  id="equipmentName"
+                  class="form-input"
+                  placeholder="e.g. Treadmill"
+                />
+              </div>
+              <div class="mb-3">
+                <label>Category</label>
+                <select id="equipmentCategory" class="form-input">
+                  <option value="Cardio">Cardio</option>
+                  <option value="Free Weights">Free Weights</option>
+                  <option value="Strength">Strength</option>
+                  <option value="Flexibility">Flexibility</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label>Quantity</label>
+                <input
+                  type="number"
+                  id="equipmentQty"
+                  class="form-input"
+                  min="1"
+                  placeholder="e.g. 5"
+                />
+              </div>
+              <div class="mb-3">
+                <label>Amount (₱)</label>
+                <input
+                  type="number"
+                  id="equipmentAmount"
+                  class="form-input"
+                  min="0"
+                  placeholder="e.g. 25000"
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button onclick="closeModal()" class="btn-cancel">Cancel</button>
+              <button onclick="saveEquipment()" class="btn-save">Save</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- DELETE CONFIRMATION MODAL -->
+        <div id="deleteModal" class="modal-overlay" style="display: none">
+          <div class="modal-box" style="max-width: 380px">
+            <div class="modal-header">
+              <h5>Confirm Delete</h5>
+              <button onclick="closeDeleteModal()" class="modal-close">
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>
+                Are you sure you want to delete
+                <strong id="deleteEquipmentName"></strong>?
+              </p>
+              <p style="font-size: 13px; color: #888; margin-top: 8px">
+                This action cannot be undone.
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button onclick="closeDeleteModal()" class="btn-cancel">
+                Cancel
+              </button>
+              <button onclick="confirmDelete()" class="btn-delete">
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAYMENTS -->
+        <div id="section-payments" class="section">
+          <div class="section-card">
+            <div class="section-card-header">
+              <h5>Payment Records</h5>
+              <input
+                type="text"
+                class="search-box"
+                placeholder="Search..."
+                oninput="filterTable('paymentsTable', this.value)"
+              />
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover" id="paymentsTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Member</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Method</th>
+                  </tr>
+                </thead>
+                <tbody id="paymentsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- FITNESS PROGRAMS -->
+        <div id="section-programs" class="section">
+          <div class="section-card">
+            <div class="section-card-header">
+              <h5>Fitness Programs</h5>
+              <input
+                type="text"
+                class="search-box"
+                placeholder="Search..."
+                oninput="filterTable('programsTable', this.value)"
+              />
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover" id="programsTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Program</th>
+                    <th>Date</th>
+                    <th>Session</th>
+                    <th>Duration</th>
+                    <th>Trainer</th>
+                  </tr>
+                </thead>
+                <tbody id="programsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="dashboard.js"></script>
+  </body>
+</html>
