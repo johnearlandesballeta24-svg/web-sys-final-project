@@ -10,7 +10,6 @@ body {
   overflow-x: hidden;
 }
 
-/* WRAPPER */
 .wrapper {
   display: flex;
   min-height: 100vh;
@@ -51,6 +50,22 @@ body {
   margin-top: 4px;
 }
 
+.role-badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.role-member {
+  background: #9fe1cb;
+  color: #0f6e56;
+}
+
 .sidebar-menu {
   list-style: none;
   padding: 1rem 0;
@@ -76,10 +91,6 @@ body {
   border-left-color: #9fe1cb;
 }
 
-.sidebar-menu li a i {
-  font-size: 16px;
-}
-
 .sidebar-footer {
   padding: 1rem 1.25rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -99,44 +110,11 @@ body {
   color: white;
 }
 
-.role-badge {
-  display: inline-block;
-  margin-top: 6px;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.role-maintenance {
-  background: #f4a526;
-  color: #7a4f00;
-}
-.role-trainer {
-  background: #2c7be5;
-  color: white;
-}
-.role-receptionist {
-  background: #9b59b6;
-  color: white;
-}
-.role-admin {
-  background: #e74c3c;
-  color: white;
-}
-.role-member {
-  background: #1d9e75;
-  color: white;
-}
-
-/* MAIN CONTENT */
+/* MAIN */
 #mainContent {
   margin-left: 240px;
   flex: 1;
   transition: margin-left 0.3s;
-  min-height: 100vh;
 }
 
 #mainContent.expanded {
@@ -188,6 +166,34 @@ body {
   display: block;
 }
 
+/* WELCOME BANNER */
+.welcome-banner {
+  background: linear-gradient(135deg, #1d9e75, #0f6e56);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.welcome-banner h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.welcome-banner p {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.trophy-icon {
+  font-size: 48px;
+  opacity: 0.3;
+}
+
 /* STAT CARDS */
 .stat-card {
   background: white;
@@ -231,13 +237,13 @@ body {
 }
 
 .stat-info h3 {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: bold;
   color: #333;
   margin: 0;
 }
 
-/* SECTION CARDS (tables) */
+/* SECTION CARDS */
 .section-card {
   background: white;
   border-radius: 12px;
@@ -265,7 +271,7 @@ body {
   border-radius: 8px;
   font-size: 13px;
   outline: none;
-  width: 220px;
+  width: 200px;
   transition: border-color 0.2s;
 }
 
@@ -296,209 +302,230 @@ body {
   background: #f0faf6;
 }
 
-/* Add button */
-.btn-add {
-  padding: 7px 16px;
+/* PROFILE */
+.profile-body {
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
   background: #1d9e75;
   color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
+  font-size: 28px;
   font-weight: bold;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.2s;
-}
-
-.btn-add:hover {
-  background: #0f6e56;
-}
-
-/* Action buttons in table */
-.btn-edit {
-  padding: 5px 12px;
-  background: #2c7be5;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-  margin-right: 4px;
-  transition: background 0.2s;
-}
-
-.btn-edit:hover {
-  background: #1a5bbf;
-}
-
-.btn-delete {
-  padding: 5px 12px;
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn-delete:hover {
-  background: #c0392b;
-}
-
-/* Modal overlay */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
-.modal-box {
-  background: white;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 460px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
+.profile-details {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid #f0f2f5;
-}
-
-.modal-header h5 {
-  margin: 0;
-  font-size: 15px;
-  color: #333;
-}
-
-.modal-close {
-  background: none;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
+.profile-item label {
+  font-size: 12px;
   color: #888;
-  line-height: 1;
+  display: block;
+  margin-bottom: 2px;
 }
 
-.modal-close:hover {
+.profile-item p {
+  font-size: 14px;
   color: #333;
+  font-weight: 500;
 }
 
-.modal-body {
+/* MEMBERSHIP */
+.padding-body {
   padding: 1.25rem;
 }
 
-.modal-body label {
-  display: block;
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 5px;
+.plan-card {
+  border: 2px solid #1d9e75;
+  border-radius: 12px;
+  padding: 1.25rem;
+  max-width: 340px;
 }
 
-.modal-body p {
-  font-size: 14px;
+.plan-name {
+  font-size: 22px;
+  font-weight: bold;
+  color: #1d9e75;
+  margin-bottom: 4px;
+}
+
+.plan-duration {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+.plan-amount {
+  font-size: 28px;
+  font-weight: bold;
   color: #333;
 }
 
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  padding: 1rem 1.25rem;
-  border-top: 1px solid #f0f2f5;
-}
-
-.form-input {
-  width: 100%;
-  padding: 9px 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+.plan-amount span {
   font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-  background: #fafafa;
+  color: #888;
+  font-weight: normal;
 }
 
-.form-input:focus {
-  border-color: #1d9e75;
-  background: white;
-}
-
-.btn-cancel {
-  padding: 8px 18px;
-  background: #f0f2f5;
-  color: #555;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn-cancel:hover {
-  background: #ddd;
-}
-
-.btn-save {
-  padding: 8px 18px;
-  background: #1d9e75;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
+.plan-status {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
 }
 
-.btn-save:hover {
-  background: #0f6e56;
+.status-active {
+  background: #d4edda;
+  color: #155724;
+}
+.status-inactive {
+  background: #f8d7da;
+  color: #721c24;
 }
 
-/* Hide maintenance-only elements for non-maintenance staff */
-.hide-maintenance .maintenance-only {
-  display: none;
+/* BMI badge */
+.bmi-normal {
+  color: #1d9e75;
+  font-weight: bold;
+}
+.bmi-underweight {
+  color: #2c7be5;
+  font-weight: bold;
+}
+.bmi-overweight {
+  color: #f4a526;
+  font-weight: bold;
+}
+.bmi-obese {
+  color: #e74c3c;
+  font-weight: bold;
 }
 
 /* QR Code section */
-.qr-body {
+/* QR PAGE */
+.qr-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
-.qr-hint {
-  font-size: 13px;
-  color: #888;
-  text-align: center;
+/* QR CARD */
+.qr-card {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid #e8f5f0;
 }
 
-.qr-id {
+.qr-card-top {
+  background: linear-gradient(135deg, #1d9e75, #0f6e56);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.qr-gym-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+}
+
+.qr-member-info {
+  text-align: right;
+}
+
+.qr-member-info p {
+  color: white;
   font-size: 14px;
   font-weight: bold;
-  color: #333;
-  letter-spacing: 1px;
+  margin: 0;
+}
+
+.qr-member-info span {
+  display: inline-block;
+  margin-top: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.qr-divider {
+  height: 1px;
+  background: #f0f2f5;
+}
+
+.qr-code-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  background: white;
+}
+
+.qr-code-area canvas,
+.qr-code-area img {
+  border-radius: 8px;
+}
+
+.qr-card-bottom {
+  padding: 1rem 1.5rem 1.25rem;
+  text-align: center;
+  background: #fafafa;
+}
+
+.qr-id-label {
+  font-size: 10px;
+  color: #aaa;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.qr-id-value {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1d9e75;
+  letter-spacing: 2px;
+  margin: 4px 0 8px;
+}
+
+.qr-scan-hint {
+  font-size: 11px;
+  color: #aaa;
+  margin: 0;
 }
 
 .btn-download {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 9px 20px;
+  padding: 10px 24px;
   background: #1d9e75;
   color: white;
   border: none;

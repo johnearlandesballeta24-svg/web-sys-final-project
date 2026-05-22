@@ -1,12 +1,13 @@
 <?php
+date_default_timezone_set('Asia/Manila');
 
 define('DB_HOST', '127.0.0.1');
 define('DB_NAME', 'gym_db');
 define('DB_USER', 'root');
-define('DB_PASS', '');        
+define('DB_PASS', '');
 
 function getDB(): PDO {
-    static $pdo = null;           
+    static $pdo = null;
     if ($pdo === null) {
         $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
         $options = [
@@ -19,7 +20,11 @@ function getDB(): PDO {
     return $pdo;
 }
 
-// Preflight request — browser sends this before POST
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Content-Type: application/json");
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
     exit;

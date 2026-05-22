@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Balino Gym - Member Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="member_dashboard.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- SIDEBAR -->
+      <nav id="sidebar">
+        <div class="sidebar-header">
+          <h2>Balino Gym</h2>
+          <p id="sidebarUser" class="sidebar-user"></p>
+          <span class="role-badge role-member">Member</span>
+        </div>
+        <ul class="sidebar-menu">
+          <li>
+            <a href="#" class="active" onclick="showSection('overview', this)">
+              <i class="bi bi-grid-fill"></i> Overview
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="showSection('profile', this)">
+              <i class="bi bi-person-fill"></i> My Profile
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="showSection('membership', this)">
+              <i class="bi bi-credit-card-fill"></i> Membership
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="showSection('qrcode', this)">
+              <i class="bi bi-qr-code"></i> My QR Code
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="showSection('attendance', this)">
+              <i class="bi bi-calendar-check-fill"></i> My Attendance
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="showSection('payments', this)">
+              <i class="bi bi-cash-stack"></i> My Payments
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="showSection('progress', this)">
+              <i class="bi bi-graph-up"></i> My Progress
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="showSection('programs', this)">
+              <i class="bi bi-heart-pulse-fill"></i> Programs
+            </a>
+          </li>
+        </ul>
+        <div class="sidebar-footer">
+          <a href="#" onclick="logout()">
+            <i class="bi bi-box-arrow-left"></i> Logout
+          </a>
+        </div>
+      </nav>
+
+      <!-- MAIN CONTENT -->
+      <div id="mainContent">
+        <!-- TOPBAR -->
+        <div class="topbar">
+          <button id="sidebarToggle" onclick="toggleSidebar()">
+            <i class="bi bi-list"></i>
+          </button>
+          <span id="sectionTitle" class="section-title">Overview</span>
+          <span id="topbarUser" class="topbar-user"></span>
+        </div>
+
+        <!-- OVERVIEW -->
+        <div id="section-overview" class="section active">
+          <div class="welcome-banner">
+            <div>
+              <h3 id="welcomeName">Welcome back!</h3>
+              <p id="welcomePlan">Loading your membership...</p>
+            </div>
+            <i class="bi bi-trophy-fill trophy-icon"></i>
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+              <div class="stat-card">
+                <div class="stat-icon bg-green">
+                  <i class="bi bi-calendar-check-fill"></i>
+                </div>
+                <div class="stat-info">
+                  <p>Total Visits</p>
+                  <h3 id="totalVisits">--</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-card">
+                <div class="stat-icon bg-blue">
+                  <i class="bi bi-credit-card-fill"></i>
+                </div>
+                <div class="stat-info">
+                  <p>Plan</p>
+                  <h3 id="statPlan">--</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-card">
+                <div class="stat-icon bg-orange">
+                  <i class="bi bi-cash-stack"></i>
+                </div>
+                <div class="stat-info">
+                  <p>Total Paid</p>
+                  <h3 id="totalPaid">--</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-card">
+                <div class="stat-icon bg-red">
+                  <i class="bi bi-graph-up"></i>
+                </div>
+                <div class="stat-info">
+                  <p>Assessments</p>
+                  <h3 id="totalAssessments">--</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE -->
+        <div id="section-profile" class="section">
+          <div class="section-card">
+            <div class="section-card-header">
+              <h5>My Profile</h5>
+            </div>
+            <div class="profile-body">
+              <div class="profile-avatar" id="profileAvatar"></div>
+              <div class="profile-details" id="profileDetails"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MEMBERSHIP -->
+        <div id="section-membership" class="section">
+          <div class="section-card">
+            <div class="section-card-header">
+              <h5>My Membership</h5>
+            </div>
+            <div class="padding-body" id="membershipBody"></div>
+          </div>
+        </div>
+
+        <!-- ATTENDANCE -->
+        <div id="section-attendance" class="section">
+          <div class="section-card">
+            <div class="section-card-header">
+              <h5>My Attendance</h5>
+              <input
+                type="text"
+                class="search-box"
+                placeholder="Search..."
+                oninput="filterTable('attendanceTable', this.value)"
+              />
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover" id="attendanceTable">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                  </tr>
+                </thead>
+                <tbody id="attendanceBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- QR CODE -->
+        <div id="section-qrcode" class="section">
+          <div class="qr-page">
+            <div class="qr-card">
+              <div class="qr-card-top">
+                <div class="qr-gym-name">Balino Gym</div>
+                <div class="qr-member-info">
+                  <p id="qrMemberName"></p>
+                  <span id="qrMemberPlan"></span>
+                </div>
+              </div>
+
+              <div class="qr-divider"></div>
+
+              <div class="qr-code-area">
+                <div id="memberQR"></div>
+              </div>
+
+              <div class="qr-divider"></div>
+
+              <div class="qr-card-bottom">
+                <p class="qr-id-label">MEMBER ID</p>
+                <p class="qr-id-value" id="qrIdText"></p>
+                <p class="qr-scan-hint">
+                  Scan at the entrance to record attendance
+                </p>
+              </div>
+            </div>
+
+            <button class="btn-download" onclick="downloadQR()">
+              <i class="bi bi-download"></i> Download QR Card
+            </button>
+
+            <a href="scan.html" class="btn-scan-redirect">
+             <i class="bi bi-qr-code-scan"></i> Go to Attendance Scanner
+            </a>
+          </div>
+        </div>
+
+        <!-- PAYMENTS -->
+        <div id="section-payments" class="section">
+          <div class="section-card">
+            <div class="section-card-header">
+              <h5>My Payments</h5>
+              <input
+                type="text"
+                class="search-box"
+                placeholder="Search..."
+                oninput="filterTable('paymentsTable', this.value)"
+              />
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover" id="paymentsTable">
+                <thead>
+                  <tr>
+                    <th>Payment ID</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Method</th>
+                  </tr>
+                </thead>
+                <tbody id="paymentsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROGRESS -->
+        <div id="section-progress" class="section">
+          <div class="section-card">
+            <div class="section-card-header">
+              <h5>My Progress</h5>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover" id="progressTable">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Height (cm)</th>
+                    <th>Weight (kg)</th>
+                    <th>BMI</th>
+                  </tr>
+                </thead>
+                <tbody id="progressBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROGRAMS -->
+        <div id="section-programs" class="section">
+          <div class="section-card">
+            <div class="section-card-header">
+              <h5>Available Programs</h5>
+              <input
+                type="text"
+                class="search-box"
+                placeholder="Search..."
+                oninput="filterTable('programsTable', this.value)"
+              />
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover" id="programsTable">
+                <thead>
+                  <tr>
+                    <th>Program</th>
+                    <th>Date</th>
+                    <th>Session</th>
+                    <th>Duration</th>
+                    <th>Trainer</th>
+                  </tr>
+                </thead>
+                <tbody id="programsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="member_dashboard.js"></script>
+</body>
+  </body>
+</html>

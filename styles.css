@@ -162,3 +162,123 @@ form button[type="submit"]:active {
   font-size: 12px;
   margin: 4px 0;
 }
+/* QR PAGE */
+.qr-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  gap: 1.25rem;
+}
+
+/* QR CARD */
+.qr-card {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid #e8f5f0;
+}
+
+.qr-card-top {
+  background: linear-gradient(135deg, #1d9e75, #0f6e56);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.qr-gym-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+}
+
+.qr-member-info {
+  text-align: right;
+}
+
+.qr-member-info p {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.qr-member-info span {
+  display: inline-block;
+  margin-top: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.qr-divider {
+  height: 1px;
+  background: #f0f2f5;
+}
+
+.qr-code-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  background: white;
+}
+
+.qr-code-area canvas,
+.qr-code-area img {
+  border-radius: 8px;
+}
+
+.qr-card-bottom {
+  padding: 1rem 1.5rem 1.25rem;
+  text-align: center;
+  background: #fafafa;
+}
+
+.qr-id-label {
+  font-size: 10px;
+  color: #aaa;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.qr-id-value {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1d9e75;
+  letter-spacing: 2px;
+  margin: 4px 0 8px;
+}
+
+.qr-scan-hint {
+  font-size: 11px;
+  color: #aaa;
+  margin: 0;
+}
+
+.btn-download {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: #1d9e75;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-download:hover {
+  background: #0f6e56;
+}

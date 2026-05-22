@@ -20,7 +20,7 @@ if (!$email || !$password) {
 
 $db   = getDB();
 $stmt = $db->prepare("
-  SELECT u.*, m.member_id as linked_member_id
+  SELECT u.*, m.member_id as member_id
   FROM users u
   LEFT JOIN gym_member m ON u.member_id = m.member_id
   WHERE u.email = ?

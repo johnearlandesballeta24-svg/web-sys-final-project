@@ -1,3 +1,11 @@
+function formatTime(timeStr) {
+  const [hours, minutes, seconds] = timeStr.split(":");
+  const h = parseInt(hours);
+  const ampm = h >= 12 ? "PM" : "AM";
+  const h12 = h % 12 || 12;
+  return h12 + ":" + minutes + ":" + seconds + " " + ampm;
+}
+
 const user = JSON.parse(localStorage.getItem("user"));
 user.staff_role; // e.g. 'Maintenance', 'Trainer', 'Receptionist'
 
@@ -12,6 +20,14 @@ const role = user.staff_role || user.role; // staff_role from gym_staff, role fr
 const roleEl = document.getElementById("sidebarRole");
 roleEl.textContent = role;
 roleEl.className = "role-badge role-" + role.toLowerCase();
+
+function formatTime(timeStr) {
+  const [hours, minutes, seconds] = timeStr.split(":");
+  const h = parseInt(hours);
+  const ampm = h >= 12 ? "PM" : "AM";
+  const h12 = h % 12 || 12;
+  return h12 + ":" + minutes + ":" + seconds + " " + ampm;
+}
 
 // Logout
 function logout() {
@@ -86,6 +102,11 @@ async function loadAttendance() {
   const res = await fetch("api/attendance.php");
   const data = await res.json();
   const body = document.getElementById("attendanceBody");
+  if (!data.length) {
+    body.innerHTML =
+      '<tr><td colspan="5" style="text-align:center; color:#888;">No attendance records</td></tr>';
+    return;
+  }
   body.innerHTML = data
     .map(
       (a) => `
@@ -93,8 +114,8 @@ async function loadAttendance() {
       <td>${a.attendance_id}</td>
       <td>${a.member_name}</td>
       <td>${a.date}</td>
-      <td>${a.time_in}</td>
-      <td>${a.time_out}</td>
+      <td>${formatTime(a.time_in)}</td>
+      <td>${a.time_out === "00:00:00" ? "Not yet" : formatTime(a.time_out)}</td>
     </tr>
   `,
     )
@@ -273,6 +294,34 @@ async function loadPrograms() {
     )
     .join("");
 }
+
+// Generate QR for staff
+function generateStaffQR() {
+  const qrId = user.staff_id;
+  document.getElementById("staffQrIdText").textContent = qrId;
+  document.getElementById("staffQrName").textContent =
+    user.first_name + " " + user.last_name;
+  document.getElementById("staffQrRole").textContent =
+    user.staff_role || "Staff";
+
+  new QRCode(document.getElementById("staffQR"), {
+    text: qrId,
+    width: 200,
+    height: 200,
+    colorDark: "#0F6E56",
+    colorLight: "#ffffff",
+  });
+}
+
+function downloadQR() {
+  const canvas = document.querySelector("#staffQR canvas");
+  const link = document.createElement("a");
+  link.download = "gymro-qr-" + user.staff_id + ".png";
+  link.href = canvas.toDataURL();
+  link.click();
+}
+
+generateStaffQR();
 
 // Run everything
 loadStats();
