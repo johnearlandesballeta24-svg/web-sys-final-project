@@ -34,11 +34,14 @@
               <i class="bi bi-person-fill"></i> My Profile
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a href="#" onclick="showSection('membership', this)">
               <i class="bi bi-credit-card-fill"></i> Membership
             </a>
-          </li>
+          </li> -->
+          <li><a href="#" onclick="showSection('plans', this)">
+              <i class="bi bi-card-checklist"></i> Membership Plans
+              </a></li>
           <li>
             <a href="#" onclick="showSection('qrcode', this)">
               <i class="bi bi-qr-code"></i> My QR Code
@@ -161,6 +164,54 @@
               <h5>My Membership</h5>
             </div>
             <div class="padding-body" id="membershipBody"></div>
+          </div>
+        </div>
+
+
+                <!-- PLANS -->
+        <div id="section-plans" class="section">
+
+          <!-- Current Plan -->
+          <div class="section-card mb-3">
+            <div class="section-card-header">
+              <h5>Current Plan</h5>
+            </div>
+            <div class="padding-body" id="currentPlanBody"></div>
+          </div>
+
+          <!-- Available Plans -->
+          <div class="section-card">
+            <div class="section-card-header">
+              <h5>Available Plans</h5>
+            </div>
+            <div class="plans-grid" id="plansGrid"></div>
+          </div>
+
+        </div>
+
+        <!-- PAYMENT MODAL -->
+        <div id="paymentModal" class="modal-overlay" style="display:none">
+          <div class="modal-box">
+            <div class="modal-header">
+              <h5>Complete Payment</h5>
+              <button onclick="closePaymentModal()" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="payment-summary" id="paymentSummary"></div>
+              <div class="mb-3" style="margin-top:1rem;">
+                <label>Payment Method</label>
+                <select id="paymentMethod" class="form-input">
+                  <option value="Cash">Cash</option>
+                  <option value="GCash">GCash</option>
+                  <option value="Credit Card">Credit Card</option>
+                  <option value="Bank Transfer">Bank Transfer</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button onclick="closePaymentModal()" class="btn-cancel">Cancel</button>
+              <button onclick="confirmPayment()" class="btn-save">Confirm Payment</button>
+            </div>
           </div>
         </div>
 

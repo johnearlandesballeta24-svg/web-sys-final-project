@@ -3,7 +3,7 @@ function formatTime(timeStr) {
   const h = parseInt(hours);
   const ampm = h >= 12 ? "PM" : "AM";
   const h12 = h % 12 || 12;
-  return h12 + ":" + minutes + ":" + seconds + " " + ampm;
+  return h12 + ":" + minutes + " " + ampm;
 }
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -41,6 +41,14 @@ function showSection(name, el) {
   el.classList.add("active");
   document.getElementById("sectionTitle").textContent =
     name.charAt(0).toUpperCase() + name.slice(1);
+
+  // reload fresh data every time
+  if (name === "attendance") loadAttendance();
+  if (name === "payments") loadPayments();
+  if (name === "progress") loadProgress();
+  if (name === "membership") loadMembership();
+  if (name === "plans") loadPlans();
+  if (name === "overview") loadOverview();
 }
 
 // Filter table
@@ -275,6 +283,122 @@ function downloadQR() {
 }
 
 generateQR();
+
+let selectedPlan = null;
+
+// Load plans section
+async function loadPlans() {
+  const res = await fetch("api/plans.php");
+  const data = await res.json();
+
+  // get current plan
+  const memRes = await fetch("api/member_membership.php?member_id=" + memberId);
+  const memData = await memRes.json();
+  const currentPlanName = memData.plan_name || null;
+
+  // show current plan card
+  if (memData.plan_name) {
+    document.getElementById("currentPlanBody").innerHTML = `
+      <div class="plan-card">
+        <div class="plan-name">${memData.plan_name}</div>
+        <div class="plan-duration">${memData.duration}</div>
+        <div class="plan-amount">₱${Number(memData.plan_amount).toLocaleString()} <span>/ plan</span></div>
+        <span class="plan-status ${memData.status === "Active" ? "status-active" : "status-inactive"}">
+          ${memData.status}
+        </span>
+      </div>
+    `;
+  } else {
+    document.getElementById("currentPlanBody").innerHTML =
+      '<p style="color:#888;">No active plan. Choose one below!</p>';
+  }
+
+  // show all plans
+  document.getElementById("plansGrid").innerHTML = data
+    .map((p) => {
+      const isCurrent = p.plan_name === currentPlanName;
+      const total = Number(p.plan_amount) + Number(p.joining_fee);
+      return `
+      <div class="plan-card-option ${isCurrent ? "current-plan" : ""}">
+        ${isCurrent ? '<div class="plan-badge">Current Plan</div>' : ""}
+        <h4>${p.plan_name}</h4>
+        <p class="plan-dur">${p.duration}</p>
+        <p class="plan-price">₱${Number(p.plan_amount).toLocaleString()}</p>
+        <p class="plan-fee">${Number(p.joining_fee) > 0 ? "+ ₱" + Number(p.joining_fee).toLocaleString() + " joining fee" : "No joining fee"}</p>
+        <button
+          class="btn-join ${isCurrent ? "current" : ""}"
+          onclick="${isCurrent ? "" : `openPaymentModal('${p.plan_id}', '${p.plan_name}', ${p.plan_amount}, ${p.joining_fee})`}"
+          ${isCurrent ? "disabled" : ""}
+        >
+          ${isCurrent ? "Current Plan" : "Join Plan"}
+        </button>
+      </div>
+    `;
+    })
+    .join("");
+}
+
+// Open payment modal
+function openPaymentModal(planId, planName, planAmount, joiningFee) {
+  selectedPlan = { planId, planName, planAmount, joiningFee };
+  const total = Number(planAmount) + Number(joiningFee);
+
+  document.getElementById("paymentSummary").innerHTML = `
+    <h4>${planName}</h4>
+    <div class="payment-row">
+      <span>Plan Amount</span>
+      <span>₱${Number(planAmount).toLocaleString()}</span>
+    </div>
+    <div class="payment-row">
+      <span>Joining Fee</span>
+      <span>₱${Number(joiningFee).toLocaleString()}</span>
+    </div>
+    <div class="payment-row">
+      <span>Total</span>
+      <span>₱${total.toLocaleString()}</span>
+    </div>
+  `;
+  document.getElementById("paymentModal").style.display = "flex";
+}
+
+function closePaymentModal() {
+  document.getElementById("paymentModal").style.display = "none";
+  selectedPlan = null;
+}
+
+// Confirm payment and enroll
+async function confirmPayment() {
+  if (!selectedPlan) return;
+
+  const method = document.getElementById("paymentMethod").value;
+  const total =
+    Number(selectedPlan.planAmount) + Number(selectedPlan.joiningFee);
+
+  const res = await fetch("api/member_enroll.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      member_id: memberId,
+      plan_id: selectedPlan.planId,
+      amount: total,
+      payment_method: method,
+    }),
+  });
+  const data = await res.json();
+
+  if (data.success) {
+    closePaymentModal();
+    alert("Successfully enrolled in " + selectedPlan.planName + "!");
+    loadPlans(); // refresh plans
+    loadOverview(); // refresh stats
+    loadMembership(); // refresh membership section
+  } else {
+    alert("Error: " + data.message);
+  }
+}
+
+// call loadPlans on load
+loadPlans();
 
 // Run all
 loadOverview();

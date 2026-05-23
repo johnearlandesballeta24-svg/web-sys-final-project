@@ -558,3 +558,244 @@ body {
   background: #1d9e75;
   color: white;
 }
+
+/* Plans grid */
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+.plan-card-option {
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.25rem;
+  text-align: center;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.plan-card-option:hover {
+  border-color: #1d9e75;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(29, 158, 117, 0.15);
+}
+
+.plan-card-option.current-plan {
+  border-color: #1d9e75;
+  background: #f0faf6;
+}
+
+.plan-badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1d9e75;
+  color: white;
+  font-size: 10px;
+  padding: 2px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.plan-card-option h4 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.plan-card-option .plan-dur {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+.plan-card-option .plan-price {
+  font-size: 26px;
+  font-weight: bold;
+  color: #1d9e75;
+  margin-bottom: 4px;
+}
+
+.plan-card-option .plan-fee {
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 16px;
+}
+
+.btn-join {
+  width: 100%;
+  padding: 9px;
+  background: #1d9e75;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-join:hover {
+  background: #0f6e56;
+}
+
+.btn-join.current {
+  background: #e0e0e0;
+  color: #888;
+  cursor: not-allowed;
+}
+
+/* Payment summary */
+.payment-summary {
+  background: #f0faf6;
+  border-radius: 10px;
+  padding: 1rem;
+  border: 1px solid #9fe1cb;
+}
+
+.payment-summary h4 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1d9e75;
+  margin-bottom: 8px;
+}
+
+.payment-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #555;
+  padding: 4px 0;
+  border-bottom: 1px solid #e0f0e8;
+}
+
+.payment-row:last-child {
+  border-bottom: none;
+  font-weight: bold;
+  color: #333;
+  font-size: 15px;
+  margin-top: 4px;
+}
+
+/* Modal styles - add if not already there */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-box {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.modal-header h5 {
+  margin: 0;
+  font-size: 15px;
+  color: #333;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #888;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: #333;
+}
+
+.modal-body {
+  padding: 1.25rem;
+}
+
+.modal-body label {
+  display: block;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid #f0f2f5;
+}
+
+.form-input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  background: #fafafa;
+}
+
+.form-input:focus {
+  border-color: #1d9e75;
+  background: white;
+}
+
+.btn-cancel {
+  padding: 8px 18px;
+  background: #f0f2f5;
+  color: #555;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-cancel:hover {
+  background: #ddd;
+}
+
+.btn-save {
+  padding: 8px 18px;
+  background: #1d9e75;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-save:hover {
+  background: #0f6e56;
+}
+
+.padding-body {
+  padding: 1.25rem;
+}

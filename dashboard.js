@@ -3,7 +3,7 @@ function formatTime(timeStr) {
   const h = parseInt(hours);
   const ampm = h >= 12 ? "PM" : "AM";
   const h12 = h % 12 || 12;
-  return h12 + ":" + minutes + ":" + seconds + " " + ampm;
+  return h12 + ":" + minutes + " " + ampm;
 }
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -21,14 +21,6 @@ const roleEl = document.getElementById("sidebarRole");
 roleEl.textContent = role;
 roleEl.className = "role-badge role-" + role.toLowerCase();
 
-function formatTime(timeStr) {
-  const [hours, minutes, seconds] = timeStr.split(":");
-  const h = parseInt(hours);
-  const ampm = h >= 12 ? "PM" : "AM";
-  const h12 = h % 12 || 12;
-  return h12 + ":" + minutes + ":" + seconds + " " + ampm;
-}
-
 // Logout
 function logout() {
   localStorage.removeItem("user");
@@ -42,19 +34,25 @@ function toggleSidebar() {
 }
 
 // Switch sections
-function showSection(name) {
+function showSection(name, el) {
   document
     .querySelectorAll(".section")
     .forEach((s) => s.classList.remove("active"));
   document.getElementById("section-" + name).classList.add("active");
-
   document
     .querySelectorAll(".sidebar-menu a")
     .forEach((a) => a.classList.remove("active"));
-  event.target.closest("a").classList.add("active");
-
+  el.classList.add("active");
   document.getElementById("sectionTitle").textContent =
     name.charAt(0).toUpperCase() + name.slice(1);
+
+  // reload data when switching sections
+  if (name === "attendance") loadAttendance();
+  if (name === "payments") loadPayments();
+  if (name === "members") loadMembers();
+  if (name === "equipment") loadEquipment();
+  if (name === "programs") loadPrograms();
+  if (name === "plans") loadPlans();
 }
 
 // Search/filter any table
@@ -322,6 +320,118 @@ function downloadQR() {
 }
 
 generateStaffQR();
+
+// Check receptionist role
+function checkRole() {
+  if (user.staff_role !== "Maintenance") {
+    document.body.classList.add("hide-maintenance");
+  }
+  if (user.staff_role !== "Receptionist") {
+    document.body.classList.add("hide-receptionist");
+  }
+}
+
+let selectedEnrollPlan = null;
+
+async function loadPlans() {
+  const res = await fetch("api/plans.php");
+  const data = await res.json();
+
+  // plans table
+  document.getElementById("plansBody").innerHTML = data
+    .map(
+      (p) => `
+    <tr>
+      <td>${p.plan_name}</td>
+      <td>${p.duration}</td>
+      <td>₱${Number(p.plan_amount).toLocaleString()}</td>
+      <td>₱${Number(p.joining_fee).toLocaleString()}</td>
+      <td class="receptionist-only">
+        <button class="btn-edit" onclick="openEnrollModal('${p.plan_id}', '${p.plan_name}', ${p.plan_amount}, ${p.joining_fee})">
+          Enroll Member
+        </button>
+      </td>
+    </tr>
+  `,
+    )
+    .join("");
+
+  // enrollments table
+  const enRes = await fetch("api/enrollments.php");
+  const enData = await enRes.json();
+
+  document.getElementById("enrollBody").innerHTML = enData
+    .map(
+      (e) => `
+    <tr>
+      <td>${e.enrollment_id}</td>
+      <td>${e.member_name}</td>
+      <td>${e.plan_name}</td>
+      <td>
+        <span class="plan-status ${e.status === "Active" ? "status-active" : "status-inactive"}">
+          ${e.status}
+        </span>
+      </td>
+    </tr>
+  `,
+    )
+    .join("");
+}
+
+function openEnrollModal(planId, planName, planAmount, joiningFee) {
+  selectedEnrollPlan = { planId, planName, planAmount, joiningFee };
+  const total = Number(planAmount) + Number(joiningFee);
+
+  document.getElementById("enrollPlanInfo").innerHTML = `
+    <h4>${planName}</h4>
+    <div class="payment-row"><span>Plan Amount</span><span>₱${Number(planAmount).toLocaleString()}</span></div>
+    <div class="payment-row"><span>Joining Fee</span><span>₱${Number(joiningFee).toLocaleString()}</span></div>
+    <div class="payment-row"><span>Total</span><span>₱${total.toLocaleString()}</span></div>
+  `;
+  document.getElementById("enrollMemberId").value = "";
+  document.getElementById("enrollModal").style.display = "flex";
+}
+
+function closeEnrollModal() {
+  document.getElementById("enrollModal").style.display = "none";
+  selectedEnrollPlan = null;
+}
+
+async function confirmEnroll() {
+  const memberId = document.getElementById("enrollMemberId").value.trim();
+  const method = document.getElementById("enrollPaymentMethod").value;
+  const total =
+    Number(selectedEnrollPlan.planAmount) +
+    Number(selectedEnrollPlan.joiningFee);
+
+  if (!memberId) {
+    alert("Please enter a Member ID");
+    return;
+  }
+
+  const res = await fetch("api/member_enroll.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      member_id: memberId,
+      plan_id: selectedEnrollPlan.planId,
+      amount: total,
+      payment_method: method,
+    }),
+  });
+  const data = await res.json();
+
+  if (data.success) {
+    closeEnrollModal();
+    alert("Member enrolled successfully!");
+    loadPlans();
+  } else {
+    alert("Error: " + data.message);
+  }
+}
+
+// add to load calls
+loadPlans();
 
 // Run everything
 loadStats();

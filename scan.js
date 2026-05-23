@@ -6,7 +6,7 @@ function formatTime(timeStr) {
   const h = parseInt(hours);
   const ampm = h >= 12 ? "PM" : "AM";
   const h12 = h % 12 || 12;
-  return h12 + ":" + minutes + ":" + seconds + " " + ampm;
+  return h12 + ":" + minutes + " " + ampm;
 }
 
 // Clock
